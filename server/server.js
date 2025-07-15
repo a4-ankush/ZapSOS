@@ -7,14 +7,19 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
+//required routes
 const authRoutes = require("./routes/authRoutes");
+const alertRoutes = require("./routes/alertRoutes");
 
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
 //Routes
+//auth routes
 app.use("/auth", authRoutes);
+//alert routes
+app.use("/alerts", alertRoutes);
 
 mongoose
   .connect(process.env.MONGO_URL, {
