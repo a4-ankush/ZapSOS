@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
 
-import AlertMap from "./AlertMap";
+import AlertMap from "../AlertMap";
 
 const AdminDashboard = () => {
   const [alerts, setAlerts] = useState([]);
