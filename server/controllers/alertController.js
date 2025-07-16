@@ -13,6 +13,9 @@ module.exports.createAlert = async (req, res) => {
 
     await alert.save();
 
+    const io = req.app.get("io");
+    io.emit("newAlert", alert);
+
     res.status(201).json({ msg: "Alert sent successfully", alert });
   } catch (err) {
     res.status(500).json({ msg: "error creating alert ", error: err.message });
