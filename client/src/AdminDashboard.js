@@ -6,7 +6,7 @@ import AlertMap from "./AlertMap";
 
 const AdminDashboard = () => {
   const [alerts, setAlerts] = useState([]);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token"); // don't forget : add at /auth/login route
   console.log("Token from localStorage:", token);
 
   const handleResolve = async (alertId) => {
