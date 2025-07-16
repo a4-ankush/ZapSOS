@@ -36,3 +36,24 @@ module.exports.getAllAlerts = async (req, res) => {
     res.status(500).json({ msg: "Error fetching alerts", error: err.message });
   }
 };
+
+//PATCH /alerts/:id/resolve
+module.exports.resolveAlert = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ msg: "only admins can resolve alerts" });
+    }
+
+    const alert = await Alert.findByIdAndUpdate(
+      req.params.id,
+      { status: "resolved" },
+      { new: true }
+    );
+
+    if (!alert) {
+      return res.status(404).json({ msg: "Alert not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ msg: "Error resolving alert", error: err.message });
+  }
+};
