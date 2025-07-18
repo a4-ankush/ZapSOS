@@ -10,11 +10,15 @@ const Signup = () => {
 
   const handleSignup = async () => {
     try {
-      await axios.post("http://localhost:8000/auth/register", {
-        name,
-        email,
-        password,
-      });
+      await axios.post(
+        "http://localhost:8000/auth/register",
+        {
+          name,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
       alert("Signup successful ! You can now login.");
       navigate("/login");
     } catch (err) {

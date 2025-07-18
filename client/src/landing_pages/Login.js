@@ -9,13 +9,17 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      const res = await axios.post("http://localhost:8000/auth/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:8000/auth/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
-      const { token, user } = res.data;
-      localStorage.setItem("token", token);
+      const user = res.data.user;
+
       localStorage.setItem("role", user.role);
 
       if (user.role === "admin") {

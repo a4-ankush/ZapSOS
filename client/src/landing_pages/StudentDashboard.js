@@ -8,9 +8,18 @@ const StudentDashboard = () => {
   const [status, setStatus] = useState("");
   const token = localStorage.getItem("token");
 
-  const logout = () => {
-    localStorage.clear();
-    window.location.href = "/login";
+  const logout = async () => {
+    try {
+      await axios.post(
+        "http://localhost:8000/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+      localStorage.clear();
+      window.location.href = "/login";
+    } catch (err) {
+      alert("logout failed");
+    }
   };
 
   const sendSOS = () => {
@@ -32,9 +41,7 @@ const StudentDashboard = () => {
               message,
               location,
             },
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
+            { withCredentials: true }
           );
 
           setStatus("SOS sent successfully!");

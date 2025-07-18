@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
 
@@ -6,8 +6,9 @@ import AlertMap from "../AlertMap";
 
 const AdminDashboard = () => {
   const [alerts, setAlerts] = useState([]);
-  const token = localStorage.getItem("token"); // don't forget : add at /auth/login route
-  console.log("Token from localStorage:", token);
+  const [selectedAlert, setSelectedAlert] = useState(null);
+
+  const mapRef = useRef(null);
 
   const handleResolve = async (alertId) => {
     try {
@@ -15,12 +16,12 @@ const AdminDashboard = () => {
       await axios.patch(
         `http://localhost:8000/alerts/${alertId}/resolve`,
         {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { withCredentials: true }
       );
       setAlerts((prev) =>
-        prev.map((a) => (a._id === alertId ? { ...a, status: "resolved" } : a))
+        prev.map((a) =>
+          a.alertId === alertId ? { ...a, status: "resolved" } : a
+        )
       );
     } catch (err) {
       console.error("Failed to resolve alert", err);
@@ -31,7 +32,7 @@ const AdminDashboard = () => {
     async function fetchAlerts() {
       try {
         const res = await axios.get("http://localhost:8000/alerts", {
-          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true,
         });
         setAlerts(res.data);
         console.log("Fetched alerts:", res.data);
@@ -50,12 +51,14 @@ const AdminDashboard = () => {
     });
 
     return () => socket.disconnect();
-  }, [token]);
+  }, []);
 
   return (
     <div>
       <h2>Active SOS Alerts</h2>
-      <AlertMap alerts={alerts} />
+      <div ref={mapRef}>
+        <AlertMap alerts={alerts} selectedAlert={selectedAlert} />
+      </div>
       <ul>
         {alerts.map((alert) => (
           <li key={alert._id}>
@@ -68,6 +71,25 @@ const AdminDashboard = () => {
                 Mark as Resolved
               </button>
             )}
+            <br />
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                if (
+                  alert.location &&
+                  alert.location.latitude &&
+                  alert.location.longitude
+                ) {
+                  setSelectedAlert(alert);
+                  mapRef.current?.scrollIntoView({ behavior: "smooth" });
+                } else {
+                  alert("This alert has no location data.");
+                }
+              }}
+            >
+              📍 View on Map
+            </a>
           </li>
         ))}
       </ul>

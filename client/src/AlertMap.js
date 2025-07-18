@@ -11,34 +11,42 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
 });
 
-const RecenterMap = ({ lat, long }) => {
+const RecenterMap = ({ lat, lng }) => {
   const map = useMap();
   useEffect(() => {
-    if (lat && long) map.setView([lat, long], 14);
-  }, [lat, long]);
+    if (lat && lng) map.setView([lat, lng], 14);
+  }, [lat, lng]);
 
   return null;
 };
 
-const AlertMap = ({ alerts }) => {
+const AlertMap = ({ alerts, selectedAlert }) => {
   const latest = alerts.find(
     (alert) => alert.location?.latitude && alert.location?.longitude
   );
-  const latestPosition = latest
-    ? [latest.location.latitude, latest.location.longitude]
+
+  const target =
+    selectedAlert?.location?.latitude && selectedAlert?.location?.longitude
+      ? selectedAlert
+      : latest?.location?.latitude && latest?.location?.longitude
+      ? latest
+      : null;
+  const targetPosition = target
+    ? [target.location.latitude, target.location.longitude]
     : [26.9124, 75.7873]; // default
 
   return (
     <MapContainer
-      center={latestPosition}
+      center={targetPosition}
       zoom={14}
       style={{ height: "500px", width: "100%" }}
     >
-      <RecenterMap lat={latestPosition[0]} long={latestPosition[1]} />
+      <RecenterMap lat={targetPosition[0]} lng={targetPosition[1]} />
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       {alerts
         .filter(
           (alert) =>
+            alert.status === "active" &&
             alert.location &&
             alert.location.latitude &&
             alert.location.longitude
@@ -55,6 +63,29 @@ const AlertMap = ({ alerts }) => {
             </Popup>
           </Marker>
         ))}
+
+      {selectedAlert &&
+        selectedAlert.status === "resolved" &&
+        selectedAlert.location &&
+        selectedAlert.location.latitude &&
+        selectedAlert.location.longitude && (
+          <Marker
+            key="selected-resolved"
+            position={[
+              selectedAlert.location.latitude,
+              selectedAlert.location.longitude,
+            ]}
+            icon={L.divIcon({ className: "invisible-marker" })}
+          >
+            <Popup open={true}>
+              <strong>{selectedAlert.user?.name || "Unknown user"}</strong>
+              <br />
+              {selectedAlert.message}
+              <br />
+              <em>Resolved</em>
+            </Popup>
+          </Marker>
+        )}
     </MapContainer>
   );
 };
