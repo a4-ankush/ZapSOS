@@ -1,0 +1,75 @@
+.animated-gradient-bg {
+  background-image: url(./images/Gemini_Generated_Image_drmwb9drmwb9drmw.png);
+  background-size: cover;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.fade-in-section.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* 
+.zapsos-glow {
+  color: #fff;
+  text-shadow: 0 0 2px #ffffff, 0 0 4px #ffffff, 0 0 8px #ffffff,
+    0 0 16px #ffffff;
+  font-weight: bold;
+} */
+
+.blue-glow-hr {
+  border: none;
+  height: 3px;
+  width: 100%;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  margin: 32px 0;
+}
+
+.blue-glow-hr::before {
+  content: "";
+  position: absolute;
+  left: -20%;
+  top: 0;
+  height: 100%;
+  width: 50%; /* Increased from 20% to 40% */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 40%,
+    #fff 50%,
+    #000 60%,
+    transparent 100%
+  );
+  animation: scanLine 1.5s linear infinite;
+}
+
+@keyframes scanLine {
+  0% {
+    left: -20%;
+  }
+  100% {
+    left: 100%;
+  }
+}

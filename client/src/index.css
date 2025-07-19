@@ -25,7 +25,8 @@
 body {
   font-family: cabinet;
   font-weight: bolder;
-  background-color: black;
+
+  background-color: rgb(24, 24, 24);
   color: white;
 }
 
@@ -80,4 +81,29 @@ body {
   100% {
     transform: translateY(-120vh) rotate(720deg);
   }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 10px;
+  background: rgb(24, 24, 24);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #fff;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #fff;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #fff rgb(24, 24, 24);
 }
