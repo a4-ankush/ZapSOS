@@ -6,7 +6,6 @@ import axios from "axios";
 const StudentDashboard = () => {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
-  const token = localStorage.getItem("token");
 
   const logout = async () => {
     try {
@@ -65,7 +64,12 @@ const StudentDashboard = () => {
         rows={3}
       />
       <br />
-      <button onClick={sendSOS}>Send SOS</button>
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        onClick={sendSOS}
+      >
+        Send SOS
+      </button>
       <p>{status}</p>
       <br />
       <button onClick={logout}>LogOut</button>
