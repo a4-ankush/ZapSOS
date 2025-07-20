@@ -1,11 +1,19 @@
 import React from "react";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const StudentDashboard = () => {
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState("");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8000/auth/me", { withCredentials: true })
+      .then((res) => setUser(res.data.user))
+      .catch(() => setUser({ name: "Student" }));
+  }, []);
 
   const logout = async () => {
     try {
@@ -16,6 +24,7 @@ const StudentDashboard = () => {
       );
       localStorage.clear();
       window.location.href = "/login";
+      window.location.reload();
     } catch (err) {
       alert("logout failed");
     }
@@ -56,6 +65,11 @@ const StudentDashboard = () => {
   };
   return (
     <div>
+      <div>
+        <div className="text-center text-7xl font-extrabold mt-14 mb-4 py-10">
+          <h1>Hello , {user ? user.name : "student"}</h1>
+        </div>
+      </div>
       <h2>📢 Send Emergency Alert</h2>
       <textarea
         value={message}

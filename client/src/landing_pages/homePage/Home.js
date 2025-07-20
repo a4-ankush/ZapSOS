@@ -1,5 +1,6 @@
 import React from "react";
 import "./Home.css";
+import { Link } from "react-router-dom";
 import LeftSection from "./LeftSection";
 import RightSection from "./RightSection";
 import LeftSection2 from "./LeftSection2";
@@ -17,7 +18,9 @@ const Home = () => {
         </p>
         <div className="grid grid-cols-3 gap-96 text-center ">
           <div>You</div>
-          <div className="text-xl">Your SOS in a Zap !</div>
+          <div className="text-xl">
+            Your <span className="text-red-500">SOS</span> in a Zap !
+          </div>
           <div>Helpers</div>
         </div>
 
@@ -31,7 +34,17 @@ const Home = () => {
           <RightSection2 />
         </div>
       </div>
-      <div></div>
+      <div className="text-center py-10">
+        <Link
+          to="/student"
+          className=" mt-10 bg-red-600 p-3 rounded-md text-lg font-semibold text-white hover:bg-red-700 transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl"
+        >
+          Send SOS Now!
+        </Link>
+        <p className="text-2xl p-3 text-white mt-4">
+          "ZapSOS: Because Every Second Matters."
+        </p>
+      </div>
     </div>
   );
 };

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Logo from "../Logo/Logo.js";
+import { Link } from "react-router-dom";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,8 +26,10 @@ const Login = () => {
       localStorage.setItem("role", user?.role);
 
       if (user?.role === "admin") {
+        window.dispatchEvent(new Event("userChanged"));
         navigate("/admin");
       } else if (user?.role) {
+        window.dispatchEvent(new Event("userChanged"));
         navigate("/student");
       } else {
         alert("User role not found in response.");
@@ -83,13 +87,36 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="p-4">
+        <div className="p-4 ">
           <button
-            className="mt-3 flex w-full justify-center rounded-md bg-white px-3 py-1.5 text-sm/6 font-semibold text-black shadow-xs hover:bg-gray-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="mt-1 flex w-full justify-center rounded-xl bg-white px-3 py-1.5 text-sm/6 font-semibold text-black shadow-xs hover:bg-gray-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             onClick={handleLogin}
           >
             Login
           </button>
+        </div>
+        <p className="text-center mb-1">Or</p>
+        <div className="px-4">
+          <button
+            className="  flex w-full justify-center rounded-xl bg-white px-3 py-1.5 text-sm/6 font-semibold text-black shadow-xs hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-400 hover:via-blue-500 hover:to-green-500 hover:text-white transition-all duration-300"
+            onClick={() =>
+              (window.location.href = "http://localhost:8000/auth/google")
+            }
+          >
+            <FcGoogle className="mr-2 text-xl " />
+            <span className="mr-2">Login with Google</span>
+          </button>
+        </div>
+        <div className="p-4 text-center">
+          <p className="text-sm/6 text-white">
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              className="font-semibold text-indigo-600 hover:text-indigo-500"
+            >
+              Sign up
+            </Link>
+          </p>
         </div>
       </div>
     </div>

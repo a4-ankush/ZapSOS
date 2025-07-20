@@ -5,6 +5,9 @@ const socketio = require("socket.io");
 
 const express = require("express");
 const app = express();
+const session = require("express-session");
+const passport = require("passport");
+require("./config/passport");
 
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
@@ -22,6 +25,16 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }, // set secure: true in production with HTTPS
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Routes
 

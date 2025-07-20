@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -15,24 +16,27 @@ const Footer = () => {
           <h3 className="text-white text-lg mb-3">Quick Links</h3>
           <ul className="space-y-1 text-sm">
             <li>
-              <a href="/" className="hover:text-white">
+              <Link to="/" className="hover:text-white">
                 Home
-              </a>
+              </Link>
             </li>
+            <br />
             <li>
-              <a href="/about" className="hover:text-white">
-                About
-              </a>
+              <Link to="/about" className="hover:text-white">
+                Student
+              </Link>
             </li>
+            <br />
             <li>
-              <a href="/features" className="hover:text-white">
-                Features
-              </a>
+              <Link to="/features" className="hover:text-white">
+                Admin
+              </Link>
             </li>
+            <br />
             <li>
-              <a href="/contact" className="hover:text-white">
+              <Link to="/contact" className="hover:text-white">
                 Contact
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -40,9 +44,11 @@ const Footer = () => {
         {/* Contact Info */}
         <div>
           <h3 className="text-white text-lg mb-3">Contact</h3>
-          <p className="text-sm">📍 Jaipur, India</p>
-          <p className="text-sm">📧 support@zapsos.com</p>
-          <p className="text-sm">📞 +91 12345 67890</p>
+          <p className="text-sm">Jaipur, India</p>
+          <br />
+          <p className="text-sm">support@zapsos.com</p>
+          <br />
+          <p className="text-sm">+91 12345 67890</p>
         </div>
       </div>
 

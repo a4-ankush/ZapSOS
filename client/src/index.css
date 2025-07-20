@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap");
+@import "leaflet/dist/leaflet.css";
+
 @font-face {
   font-family: Cabinet;
   src: url("./Fonts/CabinetGrotesk-Variable.ttf");
@@ -11,9 +14,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap");
-
-@import "leaflet/dist/leaflet.css";
 .leaflet-marker-icon.invisible-marker {
   display: none !important;
   background: transparent !important;

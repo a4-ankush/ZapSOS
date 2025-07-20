@@ -72,10 +72,90 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.logoutUser = (req, res) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: false,
-    sameSite: "strict",
-  });
-  res.json({ msg: "Logged out successfully" });
+  // Passport logout for Google auth
+  if (req.logout) {
+    req.logout(function (err) {
+      if (err) {
+        return res
+          .status(500)
+          .json({ msg: "Logout error", error: err.message });
+      }
+      // Destroy express-session
+      if (req.session) {
+        req.session.destroy(() => {
+          res.clearCookie("connect.sid"); // default session cookie name
+          res.clearCookie("token", {
+            httpOnly: true,
+            secure: false,
+            sameSite: "strict",
+          });
+          return res.json({ msg: "Logged out successfully" });
+        });
+      } else {
+        res.clearCookie("token", {
+          httpOnly: true,
+          secure: false,
+          sameSite: "strict",
+        });
+        return res.json({ msg: "Logged out successfully" });
+      }
+    });
+  } else {
+    // Fallback for JWT only
+    if (req.session) {
+      req.session.destroy(() => {
+        res.clearCookie("connect.sid");
+        res.clearCookie("token", {
+          httpOnly: true,
+          secure: false,
+          sameSite: "strict",
+        });
+        return res.json({ msg: "Logged out successfully" });
+      });
+    } else {
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+      });
+      return res.json({ msg: "Logged out successfully" });
+    }
+  }
+};
+
+// Get current user info for /auth/me
+module.exports.getCurrentUser = async (req, res) => {
+  // If using Passport (Google auth), user is attached to req.user
+  if (req.user) {
+    return res.json({
+      user: {
+        id: req.user._id || req.user.id,
+        name: req.user.name,
+        email: req.user.email,
+        role: req.user.role || "student",
+      },
+    });
+  }
+  // If using JWT, user info is in token, decode it
+  const token = req.cookies && req.cookies.token;
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      const user = await User.findById(decoded.id);
+      if (user) {
+        return res.json({
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
+        });
+      }
+    } catch (err) {
+      return res.status(401).json({ user: null, msg: "Invalid token" });
+    }
+  }
+  // No user found
+  return res.json({ user: null });
 };
