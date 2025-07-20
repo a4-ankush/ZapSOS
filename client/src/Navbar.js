@@ -50,12 +50,21 @@ const Navbar = () => {
           >
             Home
           </Link>
-          <Link
-            className="ml-12 font-semibold text-lg hover:bg-red-500 hover:text-white p-1 px-2 rounded-md"
-            to="/student"
-          >
-            Send SOS
-          </Link>
+          {user && user.role === "admin" ? (
+            <Link
+              className="ml-12 font-semibold text-lg hover:bg-red-500 hover:text-white p-1 px-2 rounded-md transition-all duration-200 ease-out"
+              to="/admin"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <Link
+              className="ml-12 font-semibold text-lg hover:bg-red-500 hover:text-white p-1 px-2 rounded-md transition-all duration-200 ease-out"
+              to="/student"
+            >
+              Send SOS
+            </Link>
+          )}
         </div>
         <div className="font-medium flex items-center">
           {user ? (

@@ -1,0 +1,75 @@
+.gradient-text {
+  background: linear-gradient(90deg, #4632ff, #823eff, #ff3838, #0d6dfe);
+  background-size: 200% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 3s linear 2;
+  font-weight: extrabold;
+}
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.background-image {
+  background-image: url("../homePage/images/Gemini_Generated_Image_drmwb9drmwb9drmw.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.emergency-bg {
+  min-height: 100vh;
+  background: radial-gradient(
+    circle at 60% 20%,
+    #ff3838 0%,
+    #3a0101 0%,
+    #000 80%
+  );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.sos-zap-animation {
+  position: absolute;
+  left: -100vw;
+  top: 60%;
+  transform: translateY(-50%);
+  width: 100vw;
+  text-align: center;
+  z-index: 99;
+  color: #3e88ff;
+  animation: sosZap 2.4s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+@keyframes sosZap {
+  0% {
+    left: -100vw;
+    opacity: 0.7;
+  }
+  20% {
+    left: 0;
+    opacity: 1;
+  }
+  80% {
+    left: 0;
+    opacity: 1;
+  }
+  100% {
+    left: 100vw;
+    opacity: 0;
+  }
+}
