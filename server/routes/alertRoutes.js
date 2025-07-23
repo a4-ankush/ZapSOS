@@ -6,6 +6,7 @@ const {
   createAlert,
   getAllAlerts,
   resolveAlert,
+  getAISuggestions,
 } = require("../controllers/alertController");
 
 //student SOS
@@ -26,5 +27,8 @@ router.get("/users", async (req, res) => {
     res.status(500).json({ message: "Error fetching users" });
   }
 });
+
+// AI suggestions endpoint
+router.post("/:id/ai-suggestions", auth, getAISuggestions);
 
 module.exports = router;

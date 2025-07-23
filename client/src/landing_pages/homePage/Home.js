@@ -5,12 +5,13 @@ import LeftSection from "./LeftSection";
 import RightSection from "./RightSection";
 import LeftSection2 from "./LeftSection2";
 import RightSection2 from "./RightSection2";
+import { BsStars } from "react-icons/bs";
 
 const Home = () => {
   return (
     <div className="px-6">
-      <div className="animated-gradient-bg p-3 rounded-2xl mt-8">
-        <h1 className="text-9xl font-extrabold text-center mt-32 fade-in zapsos-glow">
+      <div className="animated-gradient-bg-1 p-3 rounded-2xl mt-8">
+        <h1 className=" h1-size text-9xl font-extrabold text-center mt-32 fade-in zapsos-glow">
           Zap<span className="sos-gradient">SOS</span>
         </h1>
         <p className="text-2xl font-normal text-center mt-5 mb-56 fade-in">
@@ -26,8 +27,22 @@ const Home = () => {
 
         <hr className="blue-glow-hr" />
       </div>
+      <Link to="/zapai">
+        <div className=" animated-gradient-bg flex flex-col  items-center justify-center mt-10  text-black bg-white h-44 rounded-2xl shadow-lg ">
+          <BsStars className="text-3xl  text-purple-500" />
+          <h1 className="text-6xl fade-in">
+            try
+            <span className="font-extrabold bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient-x">
+              {" "}
+              ZapAI
+            </span>{" "}
+            now !
+          </h1>
+        </div>
+      </Link>
+
       <div>
-        <div className="mt-24">
+        <div className="mt-10">
           <LeftSection />
           <RightSection />
           <LeftSection2 />

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
 import { IoMdRefreshCircle } from "react-icons/io";
-import { HiBellAlert } from "react-icons/hi2";
+
 import { IoLocation } from "react-icons/io5";
 import AlertMap from "./AlertMap";
 import { Link } from "react-router-dom";
@@ -12,6 +12,8 @@ const AdminDashboard = () => {
   const [alerts, setAlerts] = useState([]);
   const [selectedAlert, setSelectedAlert] = useState(null);
   const [users, setUsers] = useState([]);
+  const [aiSuggestions, setAISuggestions] = useState({});
+  const [openSuggestionId, setOpenSuggestionId] = useState(null);
 
   const mapRef = useRef(null);
 
@@ -24,13 +26,38 @@ const AdminDashboard = () => {
         { withCredentials: true }
       );
       setAlerts((prev) =>
-        prev.map((a) =>
-          a.alertId === alertId ? { ...a, status: "resolved" } : a
-        )
+        prev.map((a) => (a._id === alertId ? { ...a, status: "resolved" } : a))
       );
+      console.log("Reloading window...");
+      window.location.reload();
     } catch (err) {
       console.error("Failed to resolve alert", err);
     }
+  };
+
+  const fetchAISuggestions = async (alertId) => {
+    setOpenSuggestionId(alertId);
+    setAISuggestions((prev) => ({ ...prev, [alertId]: "Loading..." }));
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/alerts/${alertId}/ai-suggestions`,
+        {},
+        { withCredentials: true }
+      );
+      setAISuggestions((prev) => ({
+        ...prev,
+        [alertId]: res.data.suggestions,
+      }));
+    } catch (err) {
+      setAISuggestions((prev) => ({
+        ...prev,
+        [alertId]: "Failed to get suggestions.",
+      }));
+    }
+  };
+
+  const closeAISuggestions = (alertId) => {
+    setOpenSuggestionId(null);
   };
 
   useEffect(() => {
@@ -90,6 +117,17 @@ const AdminDashboard = () => {
             </button>
           </div>
 
+          <div className="bg-white text-center text-xl p-4 rounded-lg mt-8 border  shadow-sm  hover:bg-slate-100 transition-all duration-300">
+            <div className="text-5xl py-2 font-extrabold">
+              <p className="text-sm font-bold mb-2">Introducing</p>
+              <div className="flex items-center justify-center mb-2 ml-4 fade-in">
+                <h2 className="bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient-x ">
+                  ZapAI
+                </h2>{" "}
+                <BsStars className="text-2xl ml-2 mb-6 text-purple-500" />
+              </div>
+            </div>
+          </div>
           <div className="bg-white text-center text-xl p-4 rounded-lg mt-4 border  shadow-sm hover:bg-slate-100 transition-all duration-300">
             <div className="text-5xl py-2 font-extrabold">
               {alerts.filter((a) => a.status === "active").length}
@@ -119,7 +157,7 @@ const AdminDashboard = () => {
             </span>
           </div>
         </div>
-        <div className="col-span-4 bg-slate-200 p-4 rounded-xl">
+        <div className="second-col col-span-4 bg-slate-200 p-4 rounded-xl">
           <div>
             <div className="flex items-center text-center mb-4">
               <h2 className="  text-2xl font-extrabold mt-2 mr-2">
@@ -134,11 +172,21 @@ const AdminDashboard = () => {
             >
               <AlertMap alerts={alerts} selectedAlert={selectedAlert} />
             </div>
-            <div className="h-full bg-black text-white p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300">
-              <h2 className="text-2xl font-extrabold mb-4">All Alerts</h2>
+            <div
+              className="
+             bg-black text-white p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300"
+            >
+              <h2 className="text-2xl font-extrabold mb-4">
+                All Alerts{" "}
+                <span className="text-sm ml-2 font-normal">
+                  Powered by{" "}
+                  <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient-x font-bold">
+                    ZapAI
+                  </span>
+                </span>
+              </h2>
               <div className="h-80 overflow-y-auto pr-2">
                 {" "}
-                {/* scrollable container */}
                 <ul>
                   {alerts.map((alert) => (
                     <li
@@ -147,10 +195,12 @@ const AdminDashboard = () => {
                     >
                       {" "}
                       <div className="text-xl">
-                        Name :
-                        <strong> {alert.user?.name || "Unknown user"} </strong>
+                        Name : {alert.user?.name || "Unknown user"}
                         <br />
-                        Message :<strong> {alert.message}</strong>
+                        <span className="text-red-500">Message </span> : &nbsp;
+                        {alert.message}
+                        <br />
+                        Contact : {alert.user?.email};
                         <br />
                         Status :&nbsp;&nbsp;&nbsp;
                         <span
@@ -165,14 +215,49 @@ const AdminDashboard = () => {
                         <br />
                         <div className="text-sm mt-2 flex transition-all duration-300 rounded-full p-2 w-36 shadow hover:bg-gray-700 ">
                           <BsStars className="text-lg mr-2 text-blue-500" />
-                          <Link to="#">
-                            <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent font-semibold hover:text-white transition-all duration-300">
-                              AI suggestions
-                            </span>
-                          </Link>
+                          <button
+                            onClick={() =>
+                              openSuggestionId === alert._id
+                                ? closeAISuggestions(alert._id)
+                                : fetchAISuggestions(alert._id)
+                            }
+                            className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent font-semibold hover:text-white transition-all duration-300"
+                          >
+                            AI suggestions
+                          </button>
                         </div>
+                        {openSuggestionId === alert._id && (
+                          <div className="bg-white text-black text-sm rounded-lg p-4 mt-2 shadow-lg relative z-10">
+                            <div style={{ whiteSpace: "pre-line" }}>
+                              {aiSuggestions[alert._id] === "Loading..." ? (
+                                <span
+                                  className="bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient-x font-extrabold text-md"
+                                  style={{
+                                    display: "inline-block",
+                                    animation: "gradient-x 2s linear 3",
+                                  }}
+                                >
+                                  Loading...
+                                </span>
+                              ) : (
+                                aiSuggestions[alert._id] || "Loading..."
+                              )}
+                            </div>
+                            <button
+                              onClick={() => closeAISuggestions(alert._id)}
+                              className=" bg-black rounded-md px-2 absolute top-2 right-2 text-white hover:bg-red-600 transition-all duration-300"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        )}
                       </div>
                       <div className="text-center">
+                        <div className="mb-2 text-xs text-gray-300">
+                          {alert.createdAt
+                            ? new Date(alert.createdAt).toLocaleString()
+                            : "No date"}
+                        </div>
                         {alert.status === "active" && (
                           <button
                             onClick={() => handleResolve(alert._id)}

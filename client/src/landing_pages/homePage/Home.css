@@ -1,6 +1,23 @@
-.animated-gradient-bg {
-  background-image: url(./images/Gemini_Generated_Image_drmwb9drmwb9drmw.png);
+.animated-gradient-bg-1 {
+  position: relative;
+  overflow: hidden;
+}
+
+.animated-gradient-bg-1::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url(./images/bg-speed.jpeg);
   background-size: cover;
+  background-position: center;
+  filter: blur(9px);
+  opacity: 0.5;
+}
+
+.animated-gradient-bg-1 > * {
+  position: relative;
+  z-index: 1;
 }
 
 .fade-in {
@@ -28,6 +45,21 @@
 .fade-in-section.fade-in {
   opacity: 1;
   transform: translateY(0);
+}
+
+.animated-gradient-bg {
+  background: linear-gradient(270deg, #ffffff, #000000, #000000, #ffffff);
+  background-size: 400% 400%;
+  animation: gradientMove 8s ease 1;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 /* 
 .zapsos-glow {
@@ -72,4 +104,8 @@
   100% {
     left: 100%;
   }
+}
+
+.h1-size {
+  font-size: 12rem;
 }

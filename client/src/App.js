@@ -9,6 +9,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import PagenotFound from "./PagenotFound";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import ZapAI from "./landing_pages/zapai/ZapAI.js";
 
 function App() {
   return (
@@ -23,6 +24,14 @@ function App() {
           element={
             <ProtectedRoute allowedRole="student">
               <StudentDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/zapai"
+          element={
+            <ProtectedRoute allowedRole="student">
+              <ZapAI />
             </ProtectedRoute>
           }
         />

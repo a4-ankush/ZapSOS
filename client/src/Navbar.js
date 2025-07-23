@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo/Logo";
 import axios from "axios";
+import { BsStars } from "react-icons/bs";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
@@ -45,7 +46,7 @@ const Navbar = () => {
         <div className="flex ml-6 items-center">
           <Logo />
           <Link
-            className="ml-12 font-semibold text-lg hover:bg-slate-300 p-1 px-2 rounded-md"
+            className="ml-12 font-semibold text-lg hover:bg-slate-200 p-1 px-2 rounded-md"
             to="/"
           >
             Home
@@ -58,12 +59,24 @@ const Navbar = () => {
               Dashboard
             </Link>
           ) : (
-            <Link
-              className="ml-12 font-semibold text-lg hover:bg-red-500 hover:text-white p-1 px-2 rounded-md transition-all duration-200 ease-out"
-              to="/student"
-            >
-              Send SOS
-            </Link>
+            <>
+              <Link
+                className="ml-12 font-semibold text-lg hover:bg-red-500 hover:text-white p-1 px-2 rounded-md transition-all duration-200 ease-out"
+                to="/student"
+              >
+                Send SOS
+              </Link>
+              <Link
+                className=" flex ml-12 font-semibold text-lg hover:bg-slate-200   p-1 px-2 rounded-md transition-all duration-200 ease-out"
+                to="/zapai"
+              >
+                try&nbsp;
+                <span className="font-extrabold bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient-x">
+                  ZapAI
+                </span>
+                <BsStars className="text-md  text-purple-500" />
+              </Link>
+            </>
           )}
         </div>
         <div className="font-medium flex items-center">
@@ -73,7 +86,7 @@ const Navbar = () => {
                 {user.name}
               </span>
               <button
-                className="mr-6 text-lg bg-black p-3 px-5 text-white rounded-full hover:bg-zinc-60 transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl"
+                className="mr-6 text-lg p-1 px-5 bg-white text-black rounded-md hover:bg-black border border-black hover:text-white transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl"
                 onClick={handleLogout}
               >
                 Logout
@@ -82,13 +95,13 @@ const Navbar = () => {
           ) : (
             <>
               <Link
-                className="mr-6 text-lg bg-black p-3 px-5 text-white rounded-full hover:bg-zinc-60 transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl"
+                className="mr-6 text-lg p-1 px-5 bg-white text-black rounded-md hover:bg-black border border-black hover:text-white transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl"
                 to="/login"
               >
                 Login
               </Link>
               <Link
-                className="mr-10 text-lg bg-black p-3 px-5 text-white rounded-full hover:bg-zinc-60 transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl"
+                className="mr-10 text-lg  p-1 px-5 bg-white text-black rounded-md hover:bg-black border border-black hover:text-white transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl"
                 to="/signup"
               >
                 Register
