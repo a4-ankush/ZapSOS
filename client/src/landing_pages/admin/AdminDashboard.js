@@ -14,6 +14,7 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [aiSuggestions, setAISuggestions] = useState({});
   const [openSuggestionId, setOpenSuggestionId] = useState(null);
+  const [alertFilter, setAlertFilter] = useState("all");
 
   const mapRef = useRef(null);
 
@@ -176,122 +177,173 @@ const AdminDashboard = () => {
               className="
              bg-black text-white p-4 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300"
             >
-              <h2 className="text-2xl font-extrabold mb-4">
-                All Alerts{" "}
-                <span className="text-sm ml-2 font-normal">
-                  Powered by{" "}
+              <h2 className="relative text-2xl  mb-4 flex items-center justify-between ">
+                <span className="font-extrabold">All Alerts</span>{" "}
+                <span className="absolute left-24 text-sm ml-2 mt-1 font-normal ">
+                  - Powered by{" "}
                   <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient-x font-bold">
                     ZapAI
                   </span>
+                </span>
+                <span className="ml-6 flex gap-2">
+                  <button
+                    className={`px-3 text-sm  rounded ${
+                      alertFilter === "all"
+                        ? "bg-black border border-white text-white"
+                        : "bg-gray-200 text-black"
+                    }`}
+                    onClick={() => setAlertFilter("all")}
+                  >
+                    All
+                  </button>
+                  <button
+                    className={`px-3   text-sm rounded ${
+                      alertFilter === "active"
+                        ? "bg-black border border-white text-white"
+                        : "bg-gray-200 text-black"
+                    }`}
+                    onClick={() => setAlertFilter("active")}
+                  >
+                    Active
+                  </button>
+                  <button
+                    className={`px-3   text-sm rounded ${
+                      alertFilter === "resolved"
+                        ? "bg-black border border-white text-white"
+                        : "bg-gray-200 text-black"
+                    }`}
+                    onClick={() => setAlertFilter("resolved")}
+                  >
+                    Resolved
+                  </button>
                 </span>
               </h2>
               <div className="h-80 overflow-y-auto pr-2">
                 {" "}
                 <ul>
-                  {alerts.map((alert) => (
-                    <li
-                      className="flex justify-between border border-white p-4 px-8 rounded-xl mb-2 hover:bg-slate-900 transition-all duration-300 cursor-pointer hover:hover:border hover:border-indigo-600"
-                      key={alert._id}
-                    >
-                      {" "}
-                      <div className="text-xl">
-                        Name : {alert.user?.name || "Unknown user"}
-                        <br />
-                        <span className="text-red-500">Message </span> : &nbsp;
-                        {alert.message}
-                        <br />
-                        Contact : {alert.user?.email};
-                        <br />
-                        Status :&nbsp;&nbsp;&nbsp;
-                        <span
-                          className={
-                            alert.status === "active"
-                              ? " text-sm text-red-600 border border-red-600 rounded-full p-1 px-3 hover:bg-red-600 hover:text-white transition-all duration-300"
-                              : "text-sm text-slate-200 border border-slate-200 rounded-full p-1 px-3 hover:bg-slate-200 hover:text-white transition-all duration-300"
-                          }
-                        >
-                          {alert.status}
-                        </span>
-                        <br />
-                        <div className="text-sm mt-2 flex transition-all duration-300 rounded-full p-2 w-36 shadow hover:bg-gray-700 ">
-                          <BsStars className="text-lg mr-2 text-blue-500" />
-                          <button
-                            onClick={() =>
-                              openSuggestionId === alert._id
-                                ? closeAISuggestions(alert._id)
-                                : fetchAISuggestions(alert._id)
-                            }
-                            className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent font-semibold hover:text-white transition-all duration-300"
-                          >
-                            AI suggestions
-                          </button>
-                        </div>
-                        {openSuggestionId === alert._id && (
-                          <div className="bg-white text-black text-sm rounded-lg p-4 mt-2 shadow-lg relative z-10">
-                            <div style={{ whiteSpace: "pre-line" }}>
-                              {aiSuggestions[alert._id] === "Loading..." ? (
-                                <span
-                                  className="bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient-x font-extrabold text-md"
-                                  style={{
-                                    display: "inline-block",
-                                    animation: "gradient-x 2s linear 3",
-                                  }}
-                                >
-                                  Loading...
-                                </span>
-                              ) : (
-                                aiSuggestions[alert._id] || "Loading..."
-                              )}
-                            </div>
-                            <button
-                              onClick={() => closeAISuggestions(alert._id)}
-                              className=" bg-black rounded-md px-2 absolute top-2 right-2 text-white hover:bg-red-600 transition-all duration-300"
-                            >
-                              ✕
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-center">
-                        <div className="mb-2 text-xs text-gray-300">
-                          {alert.createdAt
-                            ? new Date(alert.createdAt).toLocaleString()
-                            : "No date"}
-                        </div>
-                        {alert.status === "active" && (
-                          <button
-                            onClick={() => handleResolve(alert._id)}
-                            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-blue-600 transition-all duration-300 shadow-sm hover:shadow-lg"
-                          >
-                            Mark as Resolved
-                          </button>
-                        )}
-                        <br />
-                        <br />
-                        <Link
-                          className="text-blue-500 hover:underline p-2"
-                          to="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            if (
-                              alert.location &&
-                              alert.location.latitude &&
-                              alert.location.longitude
-                            ) {
-                              setSelectedAlert(alert);
-                              mapRef.current?.scrollIntoView({
-                                behavior: "smooth",
-                              });
-                            } else {
-                              alert("This alert has no location data.");
-                            }
-                          }}
-                        >
-                          View Location
-                        </Link>
-                      </div>
+                  {alerts.filter((alert) =>
+                    alertFilter === "all" ? true : alert.status === alertFilter
+                  ).length === 0 ? (
+                    <li className="text-center text-gray-400 py-10">
+                      {alertFilter === "active"
+                        ? "There is no active alert."
+                        : alertFilter === "resolved"
+                        ? "There is no resolved alert."
+                        : "No alerts found."}
                     </li>
-                  ))}
+                  ) : (
+                    alerts
+                      .filter((alert) =>
+                        alertFilter === "all"
+                          ? true
+                          : alert.status === alertFilter
+                      )
+                      .map((alert) => (
+                        <li
+                          className="flex justify-between border border-white p-4 px-8 rounded-xl mb-2 hover:bg-slate-900 transition-all duration-300 cursor-pointer hover:hover:border hover:border-indigo-600"
+                          key={alert._id}
+                        >
+                          {" "}
+                          <div className="text-xl">
+                            Name : {alert.user?.name || "Unknown user"}
+                            <br />
+                            <span className="text-red-500">Message </span> :
+                            &nbsp;
+                            {alert.message}
+                            <br />
+                            Contact : {alert.user?.email};
+                            <br />
+                            Status :&nbsp;&nbsp;&nbsp;
+                            <span
+                              className={
+                                alert.status === "active"
+                                  ? " text-sm text-red-600 border border-red-600 rounded-full p-1 px-3 hover:bg-red-600 hover:text-white transition-all duration-300"
+                                  : "text-sm text-slate-200 border border-slate-200 rounded-full p-1 px-3 hover:bg-slate-200 hover:text-white transition-all duration-300"
+                              }
+                            >
+                              {alert.status}
+                            </span>
+                            <br />
+                            <div className="text-sm mt-2 flex transition-all duration-300 rounded-full p-2 w-36 shadow hover:bg-gray-700 ">
+                              <BsStars className="text-lg mr-2 text-blue-500" />
+                              <button
+                                onClick={() =>
+                                  openSuggestionId === alert._id
+                                    ? closeAISuggestions(alert._id)
+                                    : fetchAISuggestions(alert._id)
+                                }
+                                className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent font-semibold hover:text-white transition-all duration-300"
+                              >
+                                AI suggestions
+                              </button>
+                            </div>
+                            {openSuggestionId === alert._id && (
+                              <div className="bg-white text-black text-sm rounded-lg p-4 mt-2 shadow-lg relative z-10">
+                                <div style={{ whiteSpace: "pre-line" }}>
+                                  {aiSuggestions[alert._id] === "Loading..." ? (
+                                    <span
+                                      className="bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient-x font-extrabold text-md"
+                                      style={{
+                                        display: "inline-block",
+                                        animation: "gradient-x 2s linear 3",
+                                      }}
+                                    >
+                                      Loading...
+                                    </span>
+                                  ) : (
+                                    aiSuggestions[alert._id] || "Loading..."
+                                  )}
+                                </div>
+                                <button
+                                  onClick={() => closeAISuggestions(alert._id)}
+                                  className=" bg-black rounded-md px-2 absolute top-2 right-2 text-white hover:bg-red-600 transition-all duration-300"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                          <div className="text-center">
+                            <div className="mb-2 text-xs text-gray-300">
+                              {alert.createdAt
+                                ? new Date(alert.createdAt).toLocaleString()
+                                : "No date"}
+                            </div>
+                            {alert.status === "active" && (
+                              <button
+                                onClick={() => handleResolve(alert._id)}
+                                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-blue-600 transition-all duration-300 shadow-sm hover:shadow-lg"
+                              >
+                                Mark as Resolved
+                              </button>
+                            )}
+                            <br />
+                            <br />
+                            <Link
+                              className="text-blue-500 hover:underline p-2"
+                              to="#"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                if (
+                                  alert.location &&
+                                  alert.location.latitude &&
+                                  alert.location.longitude
+                                ) {
+                                  setSelectedAlert(alert);
+                                  mapRef.current?.scrollIntoView({
+                                    behavior: "smooth",
+                                  });
+                                } else {
+                                  alert("This alert has no location data.");
+                                }
+                              }}
+                            >
+                              View Location
+                            </Link>
+                          </div>
+                        </li>
+                      ))
+                  )}
                 </ul>
               </div>
             </div>

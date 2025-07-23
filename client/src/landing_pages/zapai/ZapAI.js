@@ -1,7 +1,7 @@
 import React from "react";
 
 const ZapAI = () => {
-  return <div>zapai</div>;
+  return <div></div>;
 };
 
 export default ZapAI;
