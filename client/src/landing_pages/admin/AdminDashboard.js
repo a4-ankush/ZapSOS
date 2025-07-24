@@ -22,7 +22,7 @@ const AdminDashboard = () => {
     try {
       console.log("Resolving alert with id:", alertId);
       await axios.patch(
-        `http://localhost:8000/alerts/${alertId}/resolve`,
+        `${process.env.REACT_APP_API_URL}/alerts/${alertId}/resolve`,
         {},
         { withCredentials: true }
       );
@@ -41,7 +41,7 @@ const AdminDashboard = () => {
     setAISuggestions((prev) => ({ ...prev, [alertId]: "Loading..." }));
     try {
       const res = await axios.post(
-        `http://localhost:8000/alerts/${alertId}/ai-suggestions`,
+        `${process.env.REACT_APP_API_URL}/alerts/${alertId}/ai-suggestions`,
         {},
         { withCredentials: true }
       );
@@ -64,9 +64,12 @@ const AdminDashboard = () => {
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const res = await axios.get("http://localhost:8000/alerts/users", {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/alerts/users`,
+          {
+            withCredentials: true,
+          }
+        );
         setUsers(res.data);
       } catch (err) {
         console.error("Failed to fetch users:", err);
@@ -76,7 +79,7 @@ const AdminDashboard = () => {
 
     async function fetchAlerts() {
       try {
-        const res = await axios.get("http://localhost:8000/alerts", {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/alerts`, {
           withCredentials: true,
         });
         setAlerts(res.data);
@@ -88,7 +91,7 @@ const AdminDashboard = () => {
     fetchAlerts();
 
     //socket.io
-    const socket = socketIOClient("http://localhost:8000");
+    const socket = socketIOClient(process.env.REACT_APP_API_URL);
     socket.on("newAlert", (newAlert) => {
       setAlerts((prev) => [newAlert, ...prev]);
       console.log("Received new alert:", newAlert);

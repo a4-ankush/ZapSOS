@@ -7,7 +7,6 @@ module.exports.aiChat = async (req, res) => {
   }
 
   try {
-    // Instruct Gemini to always reply in Markdown
     const prompt = `
 You are ZapAI, an assistant for students. 
 Format your entire response in Markdown. 

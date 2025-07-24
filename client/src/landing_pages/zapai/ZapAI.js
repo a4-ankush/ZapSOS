@@ -30,7 +30,7 @@ const ZapAI = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:8000/ai-chat",
+        `${process.env.REACT_APP_API_URL}/ai-chat`,
         { message: input },
         { withCredentials: true }
       );

@@ -30,7 +30,6 @@ body {
   color: white;
 }
 
-/* Glitch animation for the 404 text */
 .errorCode {
   background: linear-gradient(45deg, #ff0057, #333, #ff0057);
   -webkit-background-clip: text;

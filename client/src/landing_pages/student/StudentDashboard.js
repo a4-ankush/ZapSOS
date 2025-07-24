@@ -13,7 +13,9 @@ const StudentDashboard = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/auth/me", { withCredentials: true })
+      .get(`${process.env.REACT_APP_API_URL}/auth/me`, {
+        withCredentials: true,
+      })
       .then((res) => setUser(res.data.user))
       .catch(() => setUser({ name: "Student" }));
   }, []);
@@ -21,7 +23,7 @@ const StudentDashboard = () => {
   const logout = async () => {
     try {
       await axios.post(
-        "http://localhost:8000/auth/logout",
+        `${process.env.REACT_APP_API_URL}/auth/logout`,
         {},
         { withCredentials: true }
       );
@@ -47,7 +49,7 @@ const StudentDashboard = () => {
 
         try {
           const res = await axios.post(
-            "http://localhost:8000/alerts",
+            `${process.env.REACT_APP_API_URL}/alerts`,
             {
               message,
               location,

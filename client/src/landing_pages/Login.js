@@ -13,7 +13,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/auth/login",
+        `${process.env.REACT_APP_API_URL}/auth/login`,
         {
           email,
           password,
@@ -100,7 +100,7 @@ const Login = () => {
           <button
             className="  flex w-full justify-center rounded-xl bg-white px-3 py-1.5 text-sm/6 font-semibold text-black shadow-xs hover:bg-gradient-to-r hover:from-red-500 hover:via-yellow-400 hover:via-blue-500 hover:to-green-500 hover:text-white transition-all duration-300"
             onClick={() =>
-              (window.location.href = "http://localhost:8000/auth/google")
+              (window.location.href = `${process.env.REACT_APP_API_URL}/auth/google`)
             }
           >
             <FcGoogle className="mr-2 text-xl " />

@@ -7,11 +7,13 @@ import { BsStars } from "react-icons/bs";
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation(); // <-- get current location
+  const location = useLocation();
 
   const fetchUser = () => {
     axios
-      .get("http://localhost:8000/auth/me", { withCredentials: true })
+      .get(`${process.env.REACT_APP_API_URL}/auth/me`, {
+        withCredentials: true,
+      })
       .then((res) => {
         setUser(res.data.user);
       })
@@ -21,7 +23,6 @@ const Navbar = () => {
   useEffect(() => {
     fetchUser();
 
-    // Listen for login/signup events
     window.addEventListener("userChanged", fetchUser);
 
     return () => {
@@ -31,7 +32,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     await axios.post(
-      "http://localhost:8000/auth/logout",
+      `${process.env.REACT_APP_API_URL}/auth/logout`,
       {},
       { withCredentials: true }
     );
@@ -40,7 +41,6 @@ const Navbar = () => {
     window.dispatchEvent(new Event("userChanged"));
   };
 
-  // Helper function for active link styling
   const linkClass = (path, baseClass, activeClass) =>
     location.pathname === path ? `${baseClass} ${activeClass}` : baseClass;
 
@@ -118,7 +118,7 @@ const Navbar = () => {
                 className={linkClass(
                   "/login",
                   "mr-6 text-lg p-1 px-5 bg-white text-black rounded-md hover:bg-black border border-black hover:text-white transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl",
-                  " text-blue border-2 border-blue-500" // active: black bg, white text
+                  " text-blue border-2 border-blue-500"
                 )}
                 to="/login"
               >
@@ -128,7 +128,7 @@ const Navbar = () => {
                 className={linkClass(
                   "/signup",
                   "mr-10 text-lg  p-1 px-5 bg-white text-black rounded-md hover:bg-black border border-black hover:text-white transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl",
-                  " text-blue border-2 border-blue-500" // active: black bg, white text
+                  " text-blue border-2 border-blue-500"
                 )}
                 to="/signup"
               >

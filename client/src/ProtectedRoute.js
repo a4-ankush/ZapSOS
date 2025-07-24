@@ -7,7 +7,9 @@ const ProtectedRoute = ({ allowedRole, children }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/auth/me", { withCredentials: true })
+      .get(`${process.env.REACT_APP_API_URL}/auth/me`, {
+        withCredentials: true,
+      })
       .then((res) => {
         const user = res.data.user;
         if (user && user.role === allowedRole) {
@@ -19,7 +21,7 @@ const ProtectedRoute = ({ allowedRole, children }) => {
       .catch(() => setIsAuth(false));
   }, [allowedRole]);
 
-  if (isAuth === null) return null; // or a loading spinner
+  if (isAuth === null) return null;
 
   return isAuth ? children : <Navigate to="/login" />;
 };
