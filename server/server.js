@@ -21,7 +21,7 @@ const aiChatRoutes = require("./routes/aiChatRoutes");
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
@@ -31,7 +31,10 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }, // set secure: true in production with HTTPS
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+    },
   })
 );
 app.use(passport.initialize());
@@ -51,7 +54,7 @@ app.use("/ai-chat", aiChatRoutes);
 // socket.io
 const server = http.createServer(app);
 const io = socketio(server, {
-  cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] },
+  cors: { origin: process.env.CLIENT_URL, methods: ["GET", "POST"] },
 });
 
 //listen for client connections

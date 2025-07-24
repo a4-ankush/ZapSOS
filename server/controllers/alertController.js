@@ -65,12 +65,11 @@ module.exports.getAISuggestions = async (req, res) => {
     const alert = await Alert.findById(req.params.id);
     if (!alert) return res.status(404).json({ msg: "Alert not found" });
 
-    // Compose prompt for Gemini
+    //  prompt for Gemini
     const prompt = `A student sent this emergency message: "${alert.message}" and location in the above map. 
 Suggest the top 3 immediate actions an admin should take, in order of priority. 
 Format as a numbered list.`;
 
-    // Calling Gemini API
     const geminiRes = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
       {
@@ -85,7 +84,6 @@ Format as a numbered list.`;
 
     res.json({ suggestions });
   } catch (err) {
-    // Log full error details for debugging
     if (err.response) {
       console.error(
         "Gemini API error:",

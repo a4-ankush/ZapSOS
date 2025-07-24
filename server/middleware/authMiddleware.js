@@ -3,12 +3,12 @@ const User = require("../models/UserModel");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const auth = async (req, res, next) => {
-  // If Passport session exists, use it
+  // Passport session
   if (req.isAuthenticated && req.isAuthenticated() && req.user) {
     return next();
   }
 
-  // Otherwise, check JWT
+  //  JWT
   const token = req.cookies.token;
   if (!token) return res.status(401).json({ msg: "No token, access denied" });
 

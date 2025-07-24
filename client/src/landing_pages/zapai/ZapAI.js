@@ -16,7 +16,7 @@ const ZapAI = () => {
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 3500); // 3.5s
+    const timer = setTimeout(() => setShowSplash(false), 1500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -47,9 +47,8 @@ const ZapAI = () => {
   return (
     <div className="p-6">
       <div className="relative flex flex-col items-center justify-center py-6 rounded-xl overflow-hidden">
-        {/* Animated background */}
         <div className="animated-gradient-ltr absolute inset-0 w-full h-full z-0 rounded-xl" />
-        {/* Content above the background */}
+
         <div className="relative z-10 w-full">
           {showSplash && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#181c2f]/80 backdrop-blur-[6px] transition-all duration-700">

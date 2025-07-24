@@ -52,8 +52,8 @@ module.exports.login = async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: false, //  false for localhost, true for production
-        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       })
       .json({
@@ -83,19 +83,19 @@ module.exports.logoutUser = (req, res) => {
       // Destroy express-session
       if (req.session) {
         req.session.destroy(() => {
-          res.clearCookie("connect.sid"); // default session cookie name
+          res.clearCookie("connect.sid");
           res.clearCookie("token", {
             httpOnly: true,
-            secure: false,
-            sameSite: "strict",
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
           });
           return res.json({ msg: "Logged out successfully" });
         });
       } else {
         res.clearCookie("token", {
           httpOnly: true,
-          secure: false,
-          sameSite: "strict",
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
         });
         return res.json({ msg: "Logged out successfully" });
       }
@@ -107,16 +107,16 @@ module.exports.logoutUser = (req, res) => {
         res.clearCookie("connect.sid");
         res.clearCookie("token", {
           httpOnly: true,
-          secure: false,
-          sameSite: "strict",
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
         });
         return res.json({ msg: "Logged out successfully" });
       });
     } else {
       res.clearCookie("token", {
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
       });
       return res.json({ msg: "Logged out successfully" });
     }
@@ -125,7 +125,7 @@ module.exports.logoutUser = (req, res) => {
 
 // Get current user info for /auth/me
 module.exports.getCurrentUser = async (req, res) => {
-  // If using Passport (Google auth), user is attached to req.user
+  //  Passport (Google auth), user is attached to req.user
   if (req.user) {
     return res.json({
       user: {
@@ -136,7 +136,7 @@ module.exports.getCurrentUser = async (req, res) => {
       },
     });
   }
-  // If using JWT, user info is in token, decode it
+  //  using JWT, user info is in token
   const token = req.cookies && req.cookies.token;
   if (token) {
     try {

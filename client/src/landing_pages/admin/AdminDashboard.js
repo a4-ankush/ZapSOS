@@ -83,7 +83,6 @@ const AdminDashboard = () => {
         console.log("Fetched alerts:", res.data);
       } catch (err) {
         console.error("Failed to fetch alerts:", err);
-        // Optionally, set an error state here
       }
     }
     fetchAlerts();

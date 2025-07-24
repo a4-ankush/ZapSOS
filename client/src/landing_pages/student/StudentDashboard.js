@@ -3,7 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./Student.css";
-import { BiSend, BiSolidZap } from "react-icons/bi";
+import { BiSend } from "react-icons/bi";
 
 const StudentDashboard = () => {
   const [message, setMessage] = useState("");
@@ -102,7 +102,6 @@ const StudentDashboard = () => {
             Send Emergency Alerts !
           </h2>
 
-          {/* Predefined SOS messages */}
           <div className="flex justify-center gap-4 mb-6 flex-wrap">
             {predefinedMessages.map((msg, idx) => (
               <button
