@@ -70,6 +70,7 @@ io.on("connection", (socket) => {
 app.set("io", io);
 
 // mongoose connection
+
 mongoose
   .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
