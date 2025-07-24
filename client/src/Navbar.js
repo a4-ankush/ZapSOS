@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom"; // <-- add useLocation
 import Logo from "./Logo/Logo";
 import axios from "axios";
 import { BsStars } from "react-icons/bs";
@@ -7,6 +7,7 @@ import { BsStars } from "react-icons/bs";
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation(); // <-- get current location
 
   const fetchUser = () => {
     axios
@@ -36,9 +37,12 @@ const Navbar = () => {
     );
     setUser(null);
     navigate("/login");
-    // Optionally, dispatch event to update other components
     window.dispatchEvent(new Event("userChanged"));
   };
+
+  // Helper function for active link styling
+  const linkClass = (path, baseClass, activeClass) =>
+    location.pathname === path ? `${baseClass} ${activeClass}` : baseClass;
 
   return (
     <div className="px-6">
@@ -46,14 +50,22 @@ const Navbar = () => {
         <div className="flex ml-6 items-center">
           <Logo />
           <Link
-            className="ml-12 font-semibold text-lg hover:bg-slate-200 p-1 px-2 rounded-md"
+            className={linkClass(
+              "/",
+              "ml-12 font-semibold text-lg hover:bg-slate-200 p-1 px-2 rounded-md",
+              "bg-slate-200 "
+            )}
             to="/"
           >
             Home
           </Link>
           {user && user.role === "admin" ? (
             <Link
-              className="ml-12 font-semibold text-lg hover:bg-red-500 hover:text-white p-1 px-2 rounded-md transition-all duration-200 ease-out"
+              className={linkClass(
+                "/admin",
+                "ml-12 font-semibold text-lg hover:bg-red-500 hover:text-white p-1 px-2 rounded-md transition-all duration-200 ease-out",
+                "bg-red-500 text-white"
+              )}
               to="/admin"
             >
               Dashboard
@@ -61,13 +73,21 @@ const Navbar = () => {
           ) : (
             <>
               <Link
-                className="ml-12 font-semibold text-lg hover:bg-red-500 hover:text-white p-1 px-2 rounded-md transition-all duration-200 ease-out"
+                className={linkClass(
+                  "/student",
+                  "ml-12 font-semibold text-lg hover:bg-red-500 hover:text-white p-1 px-2 rounded-md transition-all duration-200 ease-out",
+                  "bg-red-500 text-white"
+                )}
                 to="/student"
               >
                 Send SOS
               </Link>
               <Link
-                className=" flex ml-12 font-semibold text-lg hover:bg-slate-200   p-1 px-2 rounded-md transition-all duration-200 ease-out"
+                className={linkClass(
+                  "/zapai",
+                  "flex ml-12 font-semibold text-lg hover:bg-slate-200 p-1 px-2 rounded-md transition-all duration-200 ease-out",
+                  "bg-slate-200 text-blue-600"
+                )}
                 to="/zapai"
               >
                 try&nbsp;
@@ -95,13 +115,21 @@ const Navbar = () => {
           ) : (
             <>
               <Link
-                className="mr-6 text-lg p-1 px-5 bg-white text-black rounded-md hover:bg-black border border-black hover:text-white transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl"
+                className={linkClass(
+                  "/login",
+                  "mr-6 text-lg p-1 px-5 bg-white text-black rounded-md hover:bg-black border border-black hover:text-white transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl",
+                  " text-blue border-2 border-blue-500" // active: black bg, white text
+                )}
                 to="/login"
               >
                 Login
               </Link>
               <Link
-                className="mr-10 text-lg  p-1 px-5 bg-white text-black rounded-md hover:bg-black border border-black hover:text-white transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl"
+                className={linkClass(
+                  "/signup",
+                  "mr-10 text-lg  p-1 px-5 bg-white text-black rounded-md hover:bg-black border border-black hover:text-white transition-all duration-300 ease-out shadow-lg hover:scale-105 hover:shadow-2xl",
+                  " text-blue border-2 border-blue-500" // active: black bg, white text
+                )}
                 to="/signup"
               >
                 Register

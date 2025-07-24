@@ -14,7 +14,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import PagenotFound from "./PagenotFound";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import ZapAI from "./landing_pages/zapai/ZapAI.js";
+import ZapAI from "./landing_pages/zapai/ZapAI";
+import Contact from "./landing_pages/Contact";
 
 function AppContent() {
   const location = useLocation();
@@ -26,6 +27,7 @@ function AppContent() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/contact" element={<Contact />} />
         <Route
           path="/student"
           element={

@@ -8,7 +8,9 @@ const Footer = () => {
         {/* Logo and Name */}
         <div>
           <h2 className="text-white text-2xl font-semibold">ZapSOS</h2>
-          <p className="text-sm mt-2">Real-Time Emergency Response System</p>
+          <p className="text-sm mt-2">
+            Real-Time AI-Powered Emergency Response System
+          </p>
         </div>
 
         {/* Quick Links */}
@@ -22,14 +24,20 @@ const Footer = () => {
             </li>
             <br />
             <li>
-              <Link to="/about" className="hover:text-white">
+              <Link to="/student" className="hover:text-white">
                 Student
               </Link>
             </li>
             <br />
             <li>
-              <Link to="/features" className="hover:text-white">
+              <Link to="/admin" className="hover:text-white">
                 Admin
+              </Link>
+            </li>
+            <br />
+            <li>
+              <Link to="/zapai" className="hover:text-white">
+                ZapAI Chat
               </Link>
             </li>
             <br />

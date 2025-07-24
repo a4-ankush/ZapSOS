@@ -113,7 +113,7 @@ const ZapAI = () => {
             </div>
             <form
               onSubmit={sendMessage}
-              className="flex items-center px-4 py-3 bg-[#20243a]/80 rounded-full shadow-lg border border-[#312e81]/40 mt-2 mb-4 mx-4"
+              className="flex items-center px-4 py-3 bg-[#20243a]/80 rounded-3xl shadow-lg border border-[#312e81]/40 mt-2 mb-4 mx-4"
             >
               <input
                 type="text"
@@ -145,7 +145,7 @@ const ZapAI = () => {
               </button>
             </form>
             <div className="text-center text-gray-400 text-sm px-6 pb-4">
-              <h3>ZapAI can make mistakes, so double-check it ! </h3>
+              <h3>ZapAI can make mistakes, so check it ! </h3>
             </div>
           </div>
         </div>
