@@ -1,6 +1,11 @@
 import React from "react";
 import AdminDashboard from "./landing_pages/admin/AdminDashboard";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import StudentDashboard from "./landing_pages/student/StudentDashboard";
 import Login from "./landing_pages/Login";
 import Signup from "./landing_pages/Signup";
@@ -11,9 +16,11 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ZapAI from "./landing_pages/zapai/ZapAI.js";
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+
   return (
-    <Router>
+    <>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -45,7 +52,15 @@ function App() {
         />
         <Route path="*" element={<PagenotFound />} />
       </Routes>
-      <Footer />
+      {location.pathname !== "/zapai" && <Footer />}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
     </Router>
   );
 }

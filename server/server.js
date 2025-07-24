@@ -16,6 +16,7 @@ const cors = require("cors");
 //required routes
 const authRoutes = require("./routes/authRoutes");
 const alertRoutes = require("./routes/alertRoutes");
+const aiChatRoutes = require("./routes/aiChatRoutes");
 
 app.use(express.json());
 app.use(
@@ -43,6 +44,9 @@ app.use("/auth", authRoutes);
 
 //alert routes
 app.use("/alerts", alertRoutes);
+
+// ai chat route
+app.use("/ai-chat", aiChatRoutes);
 
 // socket.io
 const server = http.createServer(app);
